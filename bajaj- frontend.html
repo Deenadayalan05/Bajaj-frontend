@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Data Filter</title>
+<style>
+body {
+  font-family: sans-serif;
+}
+#apiInput {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+#submitButton {
+  background-color: #0047AB;
+  color: white;
+  padding: 15px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+#multiFilter {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+#filterOptions {
+  display: flex;
+  align-items: center;
+}
+#filterOptions > div {
+  margin-right: 10px;
+}
+#filteredResponse {
+  margin-top: 20px;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<h2>API Input</h2>
+<input type="text" id="apiInput" value='{"data":["M","1","334","4","B"]}'>
+
+<button id="submitButton">Submit</button>
+
+<h2>Multi Filter</h2>
+<div id="multiFilter">
+  <div id="filterOptions">
+    <div>
+      <input type="checkbox" id="numbersFilter" checked>
+      <label for="numbersFilter">Numbers</label>
+    </div>
+    <div>
+      <button id="clearFilters">X</button>
+    </div>
+  </div>
+</div>
+
+<h2>Filtered Response</h2>
+<div id="filteredResponse"></div>
+
+<script>
+const apiInput = document.getElementById('apiInput');
+const submitButton = document.getElementById('submitButton');
+const numbersFilter = document.getElementById('numbersFilter');
+const clearFiltersButton = document.getElementById('clearFilters');
+const filteredResponse = document.getElementById('filteredResponse');
+
+submitButton.addEventListener('click', () => {
+  const inputData = JSON.parse(apiInput.value).data;
+  const filteredData = filterData(inputData);
+  filteredResponse.innerText = `Numbers: ${filteredData.join(',')}`;
+});
+
+clearFiltersButton.addEventListener('click', () => {
+  numbersFilter.checked = false;
+});
+
+function filterData(data) {
+  let filtered = data;
+  if (numbersFilter.checked) {
+    filtered = filtered.filter(item => !isNaN(item));
+  }
+  return filtered;
+}
+</script>
+
+</body>
+</html>
